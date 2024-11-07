@@ -5,7 +5,7 @@
 <h2>Instruções</h2>
 <p>Comando git clone para hostinger.</p>
 
-<pre>git clone git@github.com-margarita:Henriquecsh/lojavirtualflash.com.git</pre>
+<pre>git clone git@github.com-lojaflash:Henriquecsh/lojavirtualflash.com.git</pre>
 
 <p>Comandos a serem executados após git clone.</p>
 
