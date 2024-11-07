@@ -16,9 +16,9 @@ jobs:
           url: ${{ secrets.WEBHOOK_URL }}
           github_event_payload: true
 
-      - name: Purge cache
-        uses: jakejarvis/cloudflare-purge-action@master
-        env:
-          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
-          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-          CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
+      # - name: Purge cache
+      #   uses: jakejarvis/cloudflare-purge-action@master
+      #   env:
+      #     CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+      #     CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+      #     CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
