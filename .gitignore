@@ -1,0 +1,22 @@
+﻿# ignore arquivos de log
+*.log
+.htaccess
+.ftpquota
+*error_log
+.well-known
+
+wp-content/cache/*
+wp-content/wflogs/*
+wp-content/uploads/*
+wp-content/webp-express/*
+wp-content/aiowps_backups/*
+wp-content/wp-rocket-config/*
+
+wp-content/autoptimize_404_handler.php
+wp-content/wp-cache-config.php
+wp-content/advanced-cache.php
+wp-content/debug.log
+wordfence-waf.php
+wp-cli.phar
+
+/wp-config.php
