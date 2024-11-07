@@ -1,0 +1,24 @@
+name: Deploy files on production
+on:
+  push:
+    branches: 
+      production
+
+  workflow_dispatch:
+
+jobs:
+  deploy-development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy into production
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          github_event_payload: true
+
+      - name: Purge cache
+        uses: jakejarvis/cloudflare-purge-action@master
+        env:
+          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
