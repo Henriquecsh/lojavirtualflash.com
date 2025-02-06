@@ -16,15 +16,15 @@
 
 <h3>Ambiente de desenvolvimento</h3>
 
-<pre>git clone git@github.com-lojavirtualflashcom:Henriquecsh/lojavirtualflash.com.git</pre>
+<pre>git clone git@github.com-lojaflash_dev:Henriquecsh/lojavirtualflash.com.git</pre>
 
 <p>Comandos a serem executados após git clone.</p>
 
 <pre>ssh -p 65002 u395352277@195.200.3.59</pre>
 
-<pre>yes | cp -R /home/u395352277/domains/dev.webdesigncriarte.com/public_html/lojavirtualflash.com/files/* /home/u395352277/domains/dev.webdesigncriarte.com/public_html/lojavirtualflash.com</pre>
 
-<h2>Instruções para publicação em produção</h2>
+
+<!-- <h2>Instruções para publicação em produção</h2>
 
 > [!IMPORTANT]
 > Comandos git para publicação em produção
@@ -40,7 +40,7 @@ git push origin production
 
 > [!CAUTION]
 > Se a publicação não ocorrer, será necessário fazer manualmente. 
-> Caso tenha um merge a publicação automática não ocorre.
+> Caso tenha um merge a publicação automática não ocorre. -->
 
 
 <h2>Saudações</h2>

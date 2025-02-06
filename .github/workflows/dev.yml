@@ -1,0 +1,17 @@
+name: Deploy files on Developer
+on:
+  push:
+    branches: 
+      dev
+
+  workflow_dispatch:
+
+jobs:
+  deploy-development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy into developer
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.WEBHOOK_URL_DEV }}
+          github_event_payload: true
