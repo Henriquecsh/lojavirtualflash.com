@@ -158,6 +158,7 @@ const Sliders = (params) => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
           auth: {
@@ -173,6 +174,8 @@ const Sliders = (params) => {
         setError('Erro ao carregar os produtos');
         setLoading(false);
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -182,13 +185,21 @@ const Sliders = (params) => {
 
   return (
     <>
-      <Swiper {...swiperSettings} className="product-active">
-        {productData.map((product) => (
-          <SwiperSlide key={product.id} >
-            <ProductOneItem {...product} />
-          </SwiperSlide>
-        ))}
-      </Swiper >
+      {
+        loading ? (
+          <div className="row gutter-20 row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 justify-content-center"><p>Carregando...</p></div>
+        ) : (
+          <>
+            <Swiper {...swiperSettings} className="product-active">
+              {productData.map((product) => (
+                <SwiperSlide key={product.id} >
+                  <ProductOneItem {...product} />
+                </SwiperSlide>
+              ))}
+            </Swiper >
+          </>
+        )
+      }
 
       <div className="product__nav-wrap">
         <button className="product-button-prev">

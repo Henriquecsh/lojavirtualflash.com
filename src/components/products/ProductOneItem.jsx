@@ -13,34 +13,40 @@ export const ProductOneItem = ({
   name,
   featured,
   price,
-  oldPrice,
+  regular_price,
   slug,
 }) => {
 
+  function formatarMoeda(valor) {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(valor);
+  }
+
   const [reviews, setReviews] = useState(reviews_allowed);
-  const [rating, setRating] = useState([]);
   const imageUrl = images?.src || placeholder;
 
   return (
     <div className="product__item">
       <div className="product__thumb">
-        <Link href={`/product/${slug}`}>
+        <Link href={`/produto/${slug}`}>
           <img src={imageUrl} alt={name} />
         </Link>
         <div className="product__action">
-          <Link href={`/product/${slug}`}>
+          <Link href={`/produto/${slug}`}>
             <i className="flaticon-love"></i>
           </Link>
-          <Link href={`/product/${slug}`}>
+          <Link href={`/produto/${slug}`}>
             <i className="flaticon-loupe"></i>
           </Link>
-          <Link href={`/product/${slug}`}>
+          <Link href={`/produto/${slug}`}>
             <i className="flaticon-exchange"></i>
           </Link>
         </div>
         {on_sale && (<div className="sale-wrap sale-wrap-two"><span>Off</span></div>)}
         <div className="product__add-cart">
-          <Link href={`/product/${slug}`} className="btn">
+          <Link href={`/produto/${slug}`} className="btn">
             <i className="flaticon-shopping-bag"></i>Comprar
           </Link>
         </div>
@@ -48,8 +54,8 @@ export const ProductOneItem = ({
       <div className="product__content">
         <div className="product__reviews">
           <div className="rating">
-            {rating.map((_, index) => (
-              <i key={index} className="fas fa-star"></i>
+            {[...Array(5)].map((_, index) => (
+              <i key={index} className={index < average_rating ? 'fas fa-star' : 'far fa-star'}></i>
             ))}
           </div>
           {
@@ -59,10 +65,18 @@ export const ProductOneItem = ({
           }
         </div>
         <h4 className="title">
-          <Link href={`/product/${slug}`}>{name}</Link>
+          <Link href={`/produto/${slug}`}>{name}</Link>
         </h4>
         <h3 className="price">
-          {/* ${price?.toFixed(2)} <del>${oldPrice?.toFixed(2)}</del> */}
+          {on_sale ? (
+            <>
+              {formatarMoeda(price)} <del>{formatarMoeda(regular_price)}</del>
+            </>
+          ) : (
+            <>
+              {formatarMoeda(price)}
+            </>
+          )}
         </h3>
       </div>
     </div>

@@ -12,8 +12,8 @@ import { Breadcrumb } from "../components/breadcrumb/Breadcrumb";
 
 export const Layout = ({
   children,
-  header = 3,
-  footer = 3,
+  header = 4,
+  footer = 4,
   mainClass = "fix",
   breadcrumbTitle,
   breadcrumbSubtitle,

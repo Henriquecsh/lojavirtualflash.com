@@ -7,7 +7,7 @@ import React from "react";
 export default function ProductDetails() {
   return (
     <Layout
-      breadcrumbTitle="Products Details"
+      breadcrumbTitle="Detalhes do produto"
       breadcrumbSubtitle={"All Products"}
     >
       <section className="product__details-area">

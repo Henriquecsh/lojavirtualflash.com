@@ -7,7 +7,7 @@ import React from "react";
 
 export default function About() {
   return (
-    <Layout breadcrumbTitle="About Us" hideNewsLetter>
+    <Layout breadcrumbTitle="Sobre nós" hideNewsLetter>
       {/* about */}
       <AboutOne />
 

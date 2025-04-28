@@ -1,18 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-const productsImg01 = "/products/products_img01.jpg";
-const productsImg02 = "/products/products_img02.jpg";
-const productsImg03 = "/products/products_img03.jpg";
-const productsImg04 = "/products/products_img04.jpg";
+import axios from 'axios';
+import { useParams } from "next/navigation";
+import parse from 'html-react-parser';
+import DOMPurify from "isomorphic-dompurify";
+
+const placeholder = "/products/woocommerce-placeholder.png";
 const cardImg = "/products/card.png";
 
 export const ProductDetailsTop = () => {
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [attributes, setAttributes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+  const { slug } = useParams();
+
+  const [slides, setSlides] = useState([{ src: placeholder, alt: '' }]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
+          auth: {
+            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
+            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
+          },
+          params: {
+            slug: slug
+          },
+        });
+
+        const data = response.data[0] ? response.data[0] : []
+        setProduct(data);
+        setCategories(data.categories);
+        setTags(data.tags);
+        setSlides(data.images);
+        setAttributes(data.attributes);
+        setLoading(false);
+      } catch (err) {
+        setError('Erro ao carregar os produtos');
+        setLoading(false);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, []);
+
+  function formatarMoeda(valor) {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(valor);
+  }
+
 
   const handleQuantityChange = (type) => {
     if (type === "inc") {
@@ -25,166 +77,79 @@ export const ProductDetailsTop = () => {
   // lightbox
   const [id, setId] = useState(null);
 
-  const slides = [
-    { src: productsImg01 },
-    { src: productsImg02 },
-    { src: productsImg03 },
-    { src: productsImg04 },
-  ];
-
   return (
     <>
       <div className="row">
         <div className="col-lg-6">
           <div className="product__details-images-wrap">
             <div className="tab-content" id="myTabContent">
-              <div
-                className="tab-pane show active"
-                id="itemOne-tab-pane"
-                role="tabpanel"
-                aria-labelledby="itemOne-tab"
-                tabIndex="0"
-              >
-                <a
-                  href={"#"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setId(0);
-                  }}
+              {slides.map((slide, index) => (
+                <div
+                  key={index}
+                  className={index == 0 ? 'tab-pane show active' : 'tab-pane show'}
+                  id={`item-tab-pane-${index}`}
+                  role="tabpanel"
+                  aria-labelledby={`item-tab-${index}`}
+                  tabIndex="0"
                 >
-                  <img src={productsImg01} alt="img" />
-                </a>
-              </div>
-              <div
-                className="tab-pane"
-                id="itemTwo-tab-pane"
-                role="tabpanel"
-                aria-labelledby="itemTwo-tab"
-                tabIndex="0"
-              >
-                <a
-                  href={"#"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setId(1);
-                  }}
-                >
-                  <img src={productsImg02} alt="img" />
-                </a>
-              </div>
-              <div
-                className="tab-pane"
-                id="itemThree-tab-pane"
-                role="tabpanel"
-                aria-labelledby="itemThree-tab"
-                tabIndex="0"
-              >
-                <a
-                  href={"#"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setId(2);
-                  }}
-                >
-                  <img src={productsImg03} alt="img" />
-                </a>
-              </div>
-              <div
-                className="tab-pane"
-                id="itemFour-tab-pane"
-                role="tabpanel"
-                aria-labelledby="itemFour-tab"
-                tabIndex="0"
-              >
-                <a
-                  href={"#"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setId(3);
-                  }}
-                >
-                  <img src={productsImg04} alt="img" />
-                </a>
-              </div>
+                  <a
+                    href={"#"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setId(0);
+                    }}
+                  >
+                    {loading ? (
+                      <div className="loading"></div>
+                    ) : (
+                      <img src={slide.src} alt={slide?.alt || product.name} />
+                    )}
+                  </a>
+                </div>
+              ))}
             </div>
 
             <ul className="nav nav-tabs" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link active"
-                  id="itemOne-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#itemOne-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="itemOne-tab-pane"
-                  aria-selected="true"
-                >
-                  <img src={productsImg01} alt="img" />
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="itemTwo-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#itemTwo-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="itemTwo-tab-pane"
-                  aria-selected="false"
-                >
-                  <img src={productsImg02} alt="img" />
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="itemThree-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#itemThree-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="itemThree-tab-pane"
-                  aria-selected="false"
-                >
-                  <img src={productsImg03} alt="img" />
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="itemFour-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#itemFour-tab-pane"
-                  type="button"
-                  role="tab"
-                  aria-controls="itemFour-tab-pane"
-                  aria-selected="false"
-                >
-                  <img src={productsImg04} alt="img" />
-                </button>
-              </li>
+              {slides.map((slide, index) => (
+                <li key={index} className="nav-item" role="presentation">
+                  <button
+                    className={index == 0 ? 'nav-link active' : 'nav-link'}
+                    id={`item-tab-${index}`}
+                    data-bs-toggle="tab"
+                    data-bs-target={`#item-tab-pane-${index}`}
+                    type="button"
+                    role="tab"
+                    aria-controls={`item-tab-pane-${index}`}
+                    aria-selected="true"
+                  >
+                    <img src={slide.src} alt={slide?.alt || product.name} />
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="col-lg-6">
           <div className="product__details-content">
-            <span className="tag">Cat Food</span>
+            {categories.map((category, index) => (
+              <span key={index} className="tag">{category.name}</span>
+            ))}
             <h2 className="title">
-              Meow Mix Seafood Medley Dry Cat Food, 3.15-Pound
+              {product.name}
             </h2>
             <div className="product__reviews-wrap">
               <div className="product__reviews">
                 <div className="rating">
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
-                  <i className="fas fa-star"></i>
+                  {[...Array(5)].map((_, index) => (
+                    <i key={index} className={index < product.average_rating ? 'fas fa-star' : 'far fa-star'}></i>
+                  ))}
                 </div>
-                <span>(2 Reviews)</span>
+                {
+                  product.reviews_allowed ? (
+                    <span>{product.rating_count <= 1 ? (product.rating_count + ' Avaliação') : (product.rating_count + ' Avaliações')}</span>
+                  ) : ('')
+                }
               </div>
               <div className="product__code">
                 <span>
@@ -192,26 +157,31 @@ export const ProductDetailsTop = () => {
                 </span>
               </div>
             </div>
-            <h4 className="price">$29.00</h4>
-            <p>
-              Cat Food nullam malesuada aenean congue semper donec velit ultrice
-              search hendrerit enim, conubia sociis adipiscing sed tempor curae
-              elit nibh rutrum ipsum. Consectetur sollicitudin.
-            </p>
-            <div className="product__size-wrap">
-              <span className="size-title">Size:</span>
-              <ul className="list-wrap">
-                <li>
-                  <button>250mg</button>
-                </li>
-                <li>
-                  <button>500mg</button>
-                </li>
-                <li>
-                  <button>1kg</button>
-                </li>
-              </ul>
-            </div>
+            <h4 className="price">
+              {product.on_sale ? (
+                <>
+                  {formatarMoeda(product.price)} <del>{formatarMoeda(product.regular_price)}</del>
+                </>
+              ) : (
+                <>
+                  {formatarMoeda(product.price)}
+                </>
+              )}
+            </h4>
+            {product?.short_description && parse(DOMPurify.sanitize(product.short_description))}
+
+            {attributes.map((attribute, index) => (
+              <div key={index} className="product__size-wrap">
+                <span className="size-title">{attribute.name}:</span>
+                <ul className="list-wrap">
+                  {attribute.options.map((option, index) => (
+                    <li key={index}>
+                      <button>{option}</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
             <div className="product__details-qty">
               <div className="cart-plus-minus">
@@ -230,37 +200,42 @@ export const ProductDetailsTop = () => {
                 </div>
               </div>
 
-              <Link href="/product/p-123" className="add-btn">
-                Add To Cart
-              </Link>
+              <button className="add-btn">
+                Adicionar no carrinho
+              </button>
             </div>
-
             <Link href="/product/p-123" className="buy-btn">
-              Buy it Now
+              Comprar agora
             </Link>
             <div className="product__wishlist-wrap">
               <Link href="/product/p-123">
-                <i className="flaticon-love"></i>Add To Wishlist
-              </Link>
-              <Link href="/product/p-123">
-                <i className="flaticon-exchange"></i>Compare To Other
+                <i className="flaticon-love"></i> Adicionar aos favoritos
               </Link>
             </div>
             <div className="product__details-bottom">
               <ul className="list-wrap">
-                <li className="product__details-category">
-                  <span className="title">Categories:</span>
-                  <Link href="/product/p-123">Cat,</Link>
-                  <Link href="/product/p-123">Food,</Link>
-                  <Link href="/product/p-123">Care</Link>
-                </li>
-                <li className="product__details-tags">
-                  <span className="title">Tags:</span>
-                  <Link href="/product/p-123">Food Pet,</Link>
-                  <Link href="/product/p-123">Pet Essentials</Link>
-                </li>
-                <li className="product__details-social">
-                  <span className="title">Share :</span>
+                {categories.length > 0 && (
+                  <>
+                    <li className="product__details-category">
+                      <span className="title">Categorias:</span>
+                      {categories.map((category, index) => (
+                        <Link key={index} href={`/produtos/categoria/${category.slug}`}>{category.name}</Link>
+                      ))}
+                    </li>
+                  </>
+                )}
+                {tags.length > 0 && (
+                  <>
+                    <li className="product__details-tags">
+                      <span className="title">Tags:</span>
+                      {tags.map((tag, index) => (
+                        <Link key={index} href={`/produtos/tag/${tag.id}`}>{tag.name}</Link>
+                      ))}
+                    </li>
+                  </>
+                )}
+                {/* <li className="product__details-social">
+                  <span className="title">Compartilhar:</span>
                   <ul className="list-wrap">
                     <li>
                       <a href="https://www.facebook.com/" target="_blank">
@@ -288,7 +263,7 @@ export const ProductDetailsTop = () => {
                       </a>
                     </li>
                   </ul>
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -298,7 +273,7 @@ export const ProductDetailsTop = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div >
 
       <Lightbox
         slides={slides}

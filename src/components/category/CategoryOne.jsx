@@ -60,7 +60,7 @@ export const CategoryOne = () => {
           {productCategories.slice(0, 6).map((category, index) => (
             <div className="col" key={index} >
               <div className="category__item">
-                <Link href="/product">
+                <Link href={`/produtos/categoria/${category.slug}`}>
                   <img src={category?.image ? category.image.src : placeholder} alt={category.name} />
                   <span className="name">{category.name}</span>
                   <strong>{category.count} Items</strong>
