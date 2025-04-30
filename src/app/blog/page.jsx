@@ -1,76 +1,53 @@
+"use client"
 import { Layout } from "@/layouts/Layout";
 import { LayoutBlog } from "@/layouts/LayoutBlog";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import React from "react";
+import axios from 'axios';
 
-const blogImg01 = "/blog/blog_img01.jpg";
-const blogImg02 = "/blog/blog_img02.jpg";
-const blogImg03 = "/blog/blog_img03.jpg";
-const blogImg04 = "/blog/blog_img04.jpg";
-const blogImg05 = "/blog/blog_img05.jpg";
-const blogImg06 = "/blog/blog_img06.jpg";
 const rightArrow = "/icon/right_arrow.svg";
 const paginationIcon01 = "/icon/pagination_icon01.svg";
 const paginationIcon02 = "/icon/pagination_icon02.svg";
 
-const blogPosts = [
-  {
-    id: 1,
-    image: blogImg01,
-    tags: ["Pet", "Medical"],
-    date: "25th Aug, 2024",
-    title: `3 Signs It's Time for the First Pets Dental Cleaning`,
-    description:
-      "Duis aute irure dolor in reprehenderit innera voeWe care for the growing needs of our comm unietye build systems.",
-  },
-  {
-    id: 2,
-    image: blogImg02,
-    tags: ["Pet", "Grooming"],
-    date: "25th Aug, 2024",
-    title: "Understanding Zoonotic and Safeguarding Your Health",
-    description:
-      "Duis aute irure dolor in reprehenderit innera voeWe care for the growing needs of our comm unietye build systems.",
-  },
-  {
-    id: 3,
-    image: blogImg03,
-    tags: ["Health", "Medical"],
-    date: "25th Aug, 2024",
-    title: "How to Spot, Treat, and Prevent Hot Spots in Pets",
-    description:
-      "Duis aute irure dolor in reprehenderit innera voeWe care for the growing needs of our comm unietye build systems.",
-  },
-  {
-    id: 4,
-    image: blogImg04,
-    tags: ["Dog Love", "Pet"],
-    date: "25th Aug, 2024",
-    title: "Clean indoor air as important in controlling asthma",
-    description:
-      "Duis aute irure dolor in reprehenderit innera voeWe care for the growing needs of our comm unietye build systems.",
-  },
-  {
-    id: 5,
-    image: blogImg05,
-    tags: ["Animals", "Medical"],
-    date: "25th Aug, 2024",
-    title: "How to Spot, Treat, and Prevent Hot Spots in Pets",
-    description:
-      "Duis aute irure dolor in reprehenderit innera voeWe care for the growing needs of our comm unietye build systems.",
-  },
-  {
-    id: 6,
-    image: blogImg06,
-    tags: ["Pet", "Pet Love"],
-    date: "25th Aug, 2024",
-    title: "A Complete Price Guide for the Shar Pei Breed",
-    description:
-      "Duis aute irure dolor in reprehenderit innera voeWe care for the growing needs of our comm unietye build systems.",
-  },
-];
-
 export default function Blog() {
+
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { page } = useParams();
+  const currentPage = parseInt(page) || 1;
+  const [params, setParams] = useState({ per_page: 10, page: currentPage });
+
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(process.env.NEXT_PUBLIC_WORDPRESS_API_URL + '/posts', {
+          auth: {
+            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
+            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
+          },
+          params: params,
+        });
+
+        setBlogPosts(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Erro ao carregar os produtos');
+        setLoading(false);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
+
+
+
   return (
     <Layout
       breadcrumbTitle="Our Latest Blogs"
@@ -78,21 +55,20 @@ export default function Blog() {
       mainClass="nothing"
     >
       <LayoutBlog>
-        {/* list */}
         <div className="row">
           {blogPosts.map((post) => (
             <div key={post.id} className="col-md-6">
               <div className="blog__post-item-three blog__post-item-five shine-animate-item">
                 <div className="blog__post-thumb-three blog__post-thumb-five shine-animate">
                   <Link href="/blog/b-123">
-                    <img src={post.image} alt="blog" />
+                    {/* <img src={post.image} alt="blog" /> */}
                   </Link>
                   <ul className="list-wrap blog__post-tag blog__post-tag-two">
-                    {post.tags.map((tag, index) => (
+                    {/* {post.tags.map((tag, index) => (
                       <li key={index}>
                         <Link href="/blog">{tag}</Link>
                       </li>
-                    ))}
+                    ))} */}
                   </ul>
                 </div>
                 <div className="blog__post-content-three">
@@ -109,7 +85,7 @@ export default function Blog() {
                     </ul>
                   </div>
                   <h2 className="title">
-                    <Link href="/blog/b-123">{post.title}</Link>
+                    <Link href="/blog/b-123">{post.title.rendered}</Link>
                   </h2>
                   <p>{post.description}</p>
                   <Link href="/blog/b-123" className="btn">

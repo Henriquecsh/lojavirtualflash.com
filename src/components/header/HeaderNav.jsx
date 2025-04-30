@@ -25,6 +25,9 @@ export const HeaderNav = () => {
       <li className={pathname === "/contato" ? "active" : ""}>
         <Link href="/contato">Contato</Link>
       </li>
+      <li className={pathname === "/blog" ? "active" : ""}>
+        <Link href="/blog">Blog</Link>
+      </li>
     </ul>
   );
 };

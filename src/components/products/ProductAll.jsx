@@ -21,13 +21,15 @@ export const ProductAll = () => {
       try {
         const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
           auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
+            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY,
+            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET,
           },
           params: params,
         });
 
-        setProductData(response.data); // Armazena os produtos na variável de estado
+        console.log(response.data);
+
+        setProductData(response.data);
         setLoading(false);
       } catch (err) {
         setError('Erro ao carregar os produtos');

@@ -3705,16 +3705,61 @@ textarea {
   }
 }
 
+.banner__post-item-wrap {
+  overflow: hidden;
+}
+
 .banner__post-item {
-  position: relative;
-  z-index: 1;
+  border-radius: 20px;
   margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .banner__post-item-two {
-  position: relative;
-  z-index: 1;
+  border-radius: 20px;
   margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.banner__post-item.load,
+.banner__post-item-two.load {
+  background: #f4f4f4;
+}
+
+.banner__post-item.load img,
+.banner__post-item-two.load img {
+  opacity: 0;
+}
+
+.banner__post-item.load::before,
+.banner__post-item.load::after,
+.banner__post-item-two.load::before,
+.banner__post-item-two.load::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -400%;
+  width: 400%;
+  height: 100%;
+  animation-name: loading;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  background-image: linear-gradient(135deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0) 100%);
+}
+
+.banner__post-item.load::after,
+.banner__post-item-two.load::after {
+  animation-delay: 1.5s;
 }
 
 @media (max-width: 991.98px) {
@@ -3989,6 +4034,47 @@ textarea {
   padding: 100px 75px;
   cursor: grab;
   margin-bottom: 20px;
+}
+
+.slider__single.load {
+  position: relative;
+  background-color: #f4f4f4;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.slider__single.load::before,
+.slider__single.load::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -400%;
+  width: 400%;
+  height: 100%;
+  animation-name: loading;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  background-image: linear-gradient(135deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0) 70%,
+      rgba(255, 255, 255, 0) 100%);
+}
+
+.slider__single.load::after {
+  animation-delay: 1.5s;
+}
+
+@keyframes loading {
+  from {
+    left: -400%;
+  }
+
+  to {
+    left: 0;
+  }
 }
 
 @media (max-width: 1199.98px) {
