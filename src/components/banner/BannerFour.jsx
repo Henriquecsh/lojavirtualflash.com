@@ -1,27 +1,50 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import axios from 'axios';
 import { Swiper, SwiperSlide, modules } from "../swiper/SwiperRoot";
+import Link from "next/link";
+import Api from "@/lib/api";
 
 const rightArrow = "/icon/right_arrow.svg";
 const bannerImg01 = "/banner/h3_banner_img01.jpg";
 
 export const BannerFour = () => {
-  const swiperSettings = {
+  const swiperSettingsSlider = {
     fadeEffect: { crossFade: true },
-    autoplay: { delay: 3000 },
+    autoplay: { delay: 1000 },
+    loopAddBlankSlides: true,
+    slidesPerGroup: 1,
+    slidesPerView: 1,
     modules: modules,
     spaceBetween: 0,
     effect: "fade",
-    loop: true,
+    loop: false,
   };
 
-  const [error, setError] = useState(null);
+  const swiperSettingsBanner = {
+    fadeEffect: { crossFade: true },
+    autoplay: { delay: 3000 },
+    slidesPerGroup: 1,
+    slidesPerView: 1,
+    modules: modules,
+    spaceBetween: 0,
+    effect: "fade",
+    loop: false,
+  };
+
+  const swiperSettingsBannerTwo = {
+    fadeEffect: { crossFade: true },
+    autoplay: { delay: 3000 },
+    slidesPerGroup: 1,
+    slidesPerView: 1,
+    modules: modules,
+    spaceBetween: 0,
+    effect: "fade",
+    loop: false,
+  };
+
   const [loading, setLoading] = useState(true);
   const [sliders, setSliders] = useState([]);
-  const [banners, setBanners] = useState([]);
   const [bannersHome_1, setBannersHome_1] = useState([]);
   const [bannersHome_2, setBannersHome_2] = useState([]);
 
@@ -30,17 +53,11 @@ export const BannerFour = () => {
     const fetchSliders = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/sliders', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY,
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET,
-          },
-        });
+        const response = await Api.get('/sliders');
 
         setSliders(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Erro ao carregar os sliders');
         setLoading(false);
         console.error(err);
       } finally {
@@ -52,13 +69,7 @@ export const BannerFour = () => {
     const fetchBanners = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/banners', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY,
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET,
-          },
-        });
-
+        const response = await Api.get('/banners');
         const filteredBannersHome_1 = response.data.filter(
           (banner) => banner.posicao.includes("home-1")
         );
@@ -70,10 +81,8 @@ export const BannerFour = () => {
         setBannersHome_1(filteredBannersHome_1);
         setBannersHome_2(filteredBannersHome_2);
 
-        setBanners(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Erro ao carregar os banners');
         setLoading(false);
         console.error(err);
       } finally {
@@ -88,7 +97,7 @@ export const BannerFour = () => {
       <div className="container">
         <div className="row gutter-20">
           <div className="col-lg-8">
-            <Swiper {...swiperSettings} className="slider__active">
+            <Swiper {...swiperSettingsSlider} className="slider__active">
               <>
                 {
                   loading ? (
@@ -135,7 +144,7 @@ export const BannerFour = () => {
                       <img src={bannerImg01} alt="img" />
                     </div>
                   ) : (
-                    <Swiper {...swiperSettings}>
+                    <Swiper {...swiperSettingsBanner}>
                       {bannersHome_1.map((banner, index) => (
                         <SwiperSlide key={banner.id} className="banner__post-item shine-animate-item">
                           <div className="banner__post-thumb shine-animate">
@@ -164,7 +173,7 @@ export const BannerFour = () => {
                     </div>
                   ) : (
                     <>
-                      <Swiper {...swiperSettings}>
+                      <Swiper {...swiperSettingsBannerTwo}>
                         {bannersHome_2.map((banner, index) => (
                           <SwiperSlide key={banner.id} className="banner__post-item-two shine-animate-item">
                             <div className="banner__post-thumb shine-animate">

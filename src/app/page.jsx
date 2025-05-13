@@ -44,7 +44,7 @@ export default function Home() {
       <FeatureTwo />
 
       {/* product */}
-      <ProductTwo />
+      {/* <ProductTwo /> */}
 
       {/* testimonial */}
       <TestimonialFour />

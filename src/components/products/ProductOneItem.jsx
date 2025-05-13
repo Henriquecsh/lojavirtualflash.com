@@ -11,7 +11,6 @@ export const ProductOneItem = ({
   rating_count,
   average_rating,
   name,
-  featured,
   price,
   regular_price,
   slug,
@@ -25,7 +24,7 @@ export const ProductOneItem = ({
   }
 
   const [reviews, setReviews] = useState(reviews_allowed);
-  const imageUrl = images?.src || placeholder;
+  const imageUrl = Array.isArray(images) && images.length > 0 ? images[0].src : placeholder;
 
   return (
     <div className="product__item">

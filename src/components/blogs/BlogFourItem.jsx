@@ -1,17 +1,19 @@
 import React from "react";
 import Link from "next/link";
 
-export const BlogFourItem = ({ image, category, date, author, title }) => {
+const placeholder = "/blog/placeholder.png";
+
+export const BlogFourItem = ({ ID, image, post_author, post_date, post_title, slug }) => {
   return (
-    <div className="col-xl-3 col-lg-4 col-md-6">
-      <div className="blog__post-item-four shine-animate-item">
+    <div key={ID} className="col-xl-3 col-lg-4 col-md-6">
+      <div id={`post-${ID}`} className="blog__post-item-four shine-animate-item">
         <div className="blog__post-thumb-four shine-animate">
-          <Link href="/blog/b-123">
-            <img src={image} alt="img" />
+          <Link href={`/blog/${slug}`}>
+            <img src={image ? image : placeholder} alt={post_title} />
           </Link>
           <ul className="list-wrap blog__post-tag blog__post-tag-three">
             <li>
-              <Link href="/blog">{category}</Link>
+              {/* <Link href="/blog">{category}</Link> */}
             </li>
           </ul>
         </div>
@@ -20,16 +22,16 @@ export const BlogFourItem = ({ image, category, date, author, title }) => {
             <ul className="list-wrap">
               <li>
                 <i className="flaticon-calendar"></i>
-                {date}
+                {post_date}
               </li>
               <li>
-                <i className="flaticon-user"></i>by
-                <Link href="/blog/b-123">{author}</Link>
+                <i className="flaticon-user"></i>
+                Por {post_author}
               </li>
             </ul>
           </div>
           <h2 className="title">
-            <Link href="/blog/b-123">{title}</Link>
+            <Link href={`/blog/${slug}`}>{post_title}</Link>
           </h2>
         </div>
       </div>

@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ProductOneItem } from "./ProductOneItem";
-import { useParams } from "next/navigation";
-import axios from 'axios';
+import { useParams, useSearchParams } from "next/navigation";
+import Api from "@/lib/api";
 
 export const ProductCategory = () => {
   const [productData, setProductData] = useState([]);
@@ -13,22 +13,17 @@ export const ProductCategory = () => {
   const [currentCategory, setCurrentCategory] = useState(false);
   const [params, setParams] = useState({ per_page: 10, page: currentPage });
 
+
   useEffect(() => {
 
     const fetchProductsCategories = async () => {
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products/categories', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
-          },
-        });
-
+        const response = await Api.get('/products/categories');
         const data = response.data ? response.data : [];
-        const categorYID = data.find((category) => category.slug === slug);
+        const categoryID = data.find((category) => category.slug === slug);
 
-        setParams({ per_page: 10, page: currentPage, category: categorYID.id });
-        setCurrentCategory(categorYID.id);
+        setParams({ per_page: 10, page: currentPage, category: categoryID.id });
+        setCurrentCategory(categoryID.id);
         setLoading(false);
       } catch (err) {
         setError('Erro ao carregar os produtos');
@@ -43,11 +38,7 @@ export const ProductCategory = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
-          },
+        const response = await Api.get('/products', {
           params: params,
         });
 
@@ -64,7 +55,6 @@ export const ProductCategory = () => {
 
     fetchProducts();
   }, [currentCategory]);
-
 
   return (
     <>

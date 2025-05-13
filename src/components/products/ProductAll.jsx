@@ -1,35 +1,42 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ProductOneItem } from "./ProductOneItem";
-import axios from 'axios';
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
+import Api from "@/lib/api";
 
-const placeholder = "/products/woocommerce-placeholder.png";
 
 export const ProductAll = () => {
   const [productData, setProductData] = useState([]);
+  const [totalProduct, setTotalProduct] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { page } = useParams();
   const currentPage = parseInt(page) || 1;
-  const [params, setParams] = useState({ per_page: 10, page: currentPage })
+  const [params, setParams] = useState({ per_page: 10, page: currentPage });
 
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get('busca') || '');
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY,
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET,
-          },
-          params: params,
-        });
 
-        console.log(response.data);
+        console.log(search !== '');
 
-        setProductData(response.data);
+        if (search !== '') {
+          const response = await Api.get(`/products?search=${search}`, {
+            params: params,
+          });
+          setProductData(response.data);
+          setTotalProduct(response.headers['x-wp-total']);
+        } else {
+
+          const response = await Api.get('/products', {
+            params: params,
+          });
+          setProductData(response.data);
+        }
         setLoading(false);
       } catch (err) {
         setError('Erro ao carregar os produtos');
@@ -42,7 +49,6 @@ export const ProductAll = () => {
 
     fetchProducts();
   }, []);
-
 
   return (
     <>

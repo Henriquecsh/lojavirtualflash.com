@@ -4,7 +4,7 @@ import React from "react";
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide, modules } from "../swiper/SwiperRoot";
 import { ProductOneItem } from "./ProductOneItem";
-import axios from 'axios';
+import Api from "@/lib/api";
 
 const titleShape = "/images/title_shape.svg";
 
@@ -160,11 +160,7 @@ const Sliders = (params) => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
-          },
+        const response = await Api.get('/products', {
           params: params,
         });
 

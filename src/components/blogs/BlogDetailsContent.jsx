@@ -1,36 +1,75 @@
-import React from "react";
-import Link from "next/link";
+"use client"
 import { VideoPlayer } from "../video/VideoPlayer";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import parse from 'html-react-parser';
+import DOMPurify from "isomorphic-dompurify";
 
-const blogDetailsImg = "/blog/blog_details_img.jpg";
-const blogDetailsImg02 = "/blog/blog_details_img02.jpg";
+import Link from "next/link";
+import Api from "@/lib/api";
+
 const avatar = "/blog/avatar.png";
 
 export const BlogDetailsContent = () => {
+
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { slug } = useParams();
+
+  useEffect(() => {
+    const fetchBlogPost = async () => {
+      setLoading(true);
+      try {
+        const response = await Api.get('/posts');
+        const data = response.data ? response.data : [];
+        const postData = data.find((post) => post.slug === slug);
+
+        setPost(postData);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPost();
+  }, []);
+
+
   return (
     <>
       <div className="blog__details-wrap">
-        <div className="blog__details-thumb">
-          <img src={blogDetailsImg} alt="img" />
-        </div>
+        {post?.image && (
+          <>
+            <div className="blog__details-thumb">
+              <img src={post.image} alt={post.post_title} />
+            </div>
+          </>
+        )}
+
+        {/* <VideoPlayer
+          trigger={
+            <a href="#vid" className="play-btn popup-video">
+              <i className="fas fa-play"></i>
+            </a>
+          }
+        /> */}
+
         <div className="blog__details-content">
           <h2 className="title">
-            How Smashing Magazine Uses TinaCMS To Manage Appoint Editorial
-            Workflow
+            {post.post_title}
           </h2>
           <div className="blog__post-meta">
             <ul className="list-wrap">
               <li>
-                <i className="flaticon-user"></i>by
-                <Link href="/blog/b-123">admin</Link>
+                <i className="flaticon-user"></i>
+                Por {post.post_author}
               </li>
               <li>
-                <i className="flaticon-calendar"></i>25th Aug, 2024
-              </li>
-              <li>
-                <i className="fas fa-tags"></i>
-                <Link href="/blog">Pet,</Link>
-                <Link href="/blog">Medical</Link>
+                <i className="flaticon-calendar"></i>
+                {post.post_date}
               </li>
               <li>
                 <i className="far fa-comment-alt"></i>
@@ -38,79 +77,9 @@ export const BlogDetailsContent = () => {
               </li>
             </ul>
           </div>
-          <p>
-            When an unknown printer took ar galley offer type year anddey
-            scrambled make type aewer specimen awebook bethas survived not only
-            five when annery unknown printer.eed a little help from our friends
-            from time to time.Although we offer the one-stop convenience.
-          </p>
-          <p>
-            Eed a little help from our friends from time to time. Although we
-            offer the one-stop convenience of annery integrated range of legal,
-            financial services under one roof.eed a little help from our friends
-            from time to time. Although we offer the one-stop convenience.
-          </p>
-          <blockquote>
-            <p>
-              “ urabitur varius eros rutrum consequat Mauris aewa sollicitudin
-              enim condimentum luctus enim justo non molestie nisl ”
-            </p>
-          </blockquote>
-          <h4 className="title-two">Rediscovering The Joy Of Design</h4>
-          <p>
-            When an unknown printer took a galley of type and scrambled it to
-            make a type specimen bookhas a not awertolw only five centuries, but
-            also the leap into electronic typesetting, remaining essentially
-            unchan galley of type and scrambled it to make a type specimen book.
-          </p>
-          <div className="blog__details-inner-wrap">
-            <div className="row align-items-center">
-              <div className="col-54">
-                <div className="content">
-                  <h3 className="title-two">
-                    Revealing Images With CSS Mask Animations
-                  </h3>
-                  <p>
-                    When an unknown printer took a galley type remaining
-                    essentially unchan galley of type and scrambled it to make a
-                    type specimen book.
-                  </p>
-                  <ul className="list-wrap">
-                    <li>
-                      <i className="fas fa-arrow-right"></i>Medicare Advantage
-                      Plans
-                    </li>
-                    <li>
-                      <i className="fas fa-arrow-right"></i>Analysis & Research
-                    </li>
-                    <li>
-                      <i className="fas fa-arrow-right"></i>100% Secure Money
-                      Back
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="col-46">
-                <div className="thumb">
-                  <img src={blogDetailsImg02} alt="" />
 
-                  <VideoPlayer
-                    trigger={
-                      <a href="#vid" className="play-btn popup-video">
-                        <i className="fas fa-play"></i>
-                      </a>
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <p>
-            When an unknown printer took a galley of type and scrambled it to
-            make a type specimen bookhas a not only five centuries, but also the
-            leap into electronic typesetting, remaining essentially unchan
-            galley of type and scrambled it to make a type specimen book.
-          </p>
+          {post?.post_content && parse(DOMPurify.sanitize(post.post_content))}
+
           <div className="blog__details-content-bottom">
             <div className="row align-items-center">
               <div className="col-md-7">
@@ -131,7 +100,7 @@ export const BlogDetailsContent = () => {
               </div>
               <div className="col-md-5">
                 <div className="blog-post-share">
-                  <h5 className="title">Share:</h5>
+                  <h5 className="title">Compartilhar:</h5>
                   <ul className="list-wrap">
                     <li>
                       <Link href="https://www.facebook.com/" target="_blank">

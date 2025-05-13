@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/flaticon_pet_care.css";
-import "../assets/css/fontawesome-all.min.css";
+import "../assets/css/all.min.css";
 import "../assets/css/jquery-ui.css";
 import "../assets/css/default.css";
 import "../assets/css/animate.min.css";
@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
   `;
 
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="pt_BR" suppressHydrationWarning={true}>
       <head>
         <style dangerouslySetInnerHTML={{ __html: fontVariables }} />
       </head>

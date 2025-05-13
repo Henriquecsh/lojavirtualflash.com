@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from 'axios';
+import Api from "@/lib/api";
 
 const titleShape = "/images/title_shape.svg";
 const placeholder = "/products/woocommerce-placeholder.png";
@@ -15,12 +15,7 @@ export const CategoryOne = () => {
   useEffect(() => {
     const fetchProductsCategories = async () => {
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products/categories', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
-          },
-        });
+        const response = await Api.get('/products/categories');
 
         setProductCategories(response.data); // Armazena os produtos na variável de estado
         setLoading(false);

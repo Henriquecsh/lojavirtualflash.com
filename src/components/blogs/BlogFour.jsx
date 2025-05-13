@@ -1,50 +1,41 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { BlogFourItem } from "./BlogFourItem";
+import Api from "@/lib/api";
 
 const titleShape = "/images/title_shape.svg";
 const blogShape1 = "/blog/h4_blog_shape01.png";
 const blogShape2 = "/blog/h4_blog_shape02.png";
-const blogPost1 = "/blog/h4_blog_post01.jpg";
-const blogPost2 = "/blog/h4_blog_post02.jpg";
-const blogPost3 = "/blog/h4_blog_post03.jpg";
-const blogPost4 = "/blog/h4_blog_post04.jpg";
 
 export const BlogFour = () => {
-  const blogPosts = [
-    {
-      id: 1,
-      image: blogPost1,
-      category: "Pet",
-      date: "25th Aug",
-      author: "admin",
-      title: "10 Things You Didn't Know about The Shinese",
-    },
-    {
-      id: 2,
-      image: blogPost2,
-      category: "Care",
-      date: "25th Aug",
-      author: "admin",
-      title: "A Complete Price Guide for the Shar Pei Breed",
-    },
-    {
-      id: 3,
-      image: blogPost3,
-      category: "Pet Health",
-      date: "25th Aug",
-      author: "admin",
-      title: "Comparing the Blue vs. Lilac French Bulldog",
-    },
-    {
-      id: 4,
-      image: blogPost4,
-      category: "Cat",
-      date: "25th Aug",
-      author: "admin",
-      title: "Five Things You Didn't Know about the Red",
-    },
-  ];
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [params, setParams] = useState({ per_page: 4 });
+
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await Api.get('/posts', {
+          params: params,
+        });
+
+        setBlogPosts(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Erro ao carregar os produtos');
+        setLoading(false);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
 
   return (
     <section className="blog__post-area-four">
@@ -54,7 +45,7 @@ export const BlogFour = () => {
           <div className="col-md-8">
             <div className="section__title-two mb-20">
               <h2 className="title">
-                Latest News & Updates
+                Últimas notícias e atualizações
                 <img src={titleShape} alt="" className="injectable" />
               </h2>
             </div>
@@ -62,7 +53,7 @@ export const BlogFour = () => {
           <div className="col-md-4">
             <div className="view-all-btn">
               <Link href="/blog">
-                See All <i className="flaticon-right-arrow-angle"></i>
+                Ver todos <i className="flaticon-right-arrow-angle"></i>
               </Link>
             </div>
           </div>
@@ -70,9 +61,19 @@ export const BlogFour = () => {
 
         {/* list */}
         <div className="row justify-content-center">
-          {blogPosts.map((post) => (
-            <BlogFourItem key={post.id} {...post} />
-          ))}
+          {loading ? (
+            <>
+              <div className="col-xl-12 col-lg-12 col-md-12">
+                <p>Carregando...</p>
+              </div>
+            </>
+          ) : (
+            <>
+              {blogPosts.map((post) => (
+                <BlogFourItem key={post.ID} {...post} />
+              ))}
+            </>
+          )}
         </div>
       </div>
 

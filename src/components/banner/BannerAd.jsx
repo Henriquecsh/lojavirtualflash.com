@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from 'axios';
+import Api from "@/lib/api";
 import { Swiper, SwiperSlide, modules } from "../swiper/SwiperRoot";
 
 const adBanner = "/images/advertisement.jpg";
@@ -13,7 +13,7 @@ export const BannerAd = () => {
     modules: modules,
     spaceBetween: 0,
     effect: "fade",
-    loop: true,
+    loop: false,
   };
 
   const [loading, setLoading] = useState(true);
@@ -23,13 +23,7 @@ export const BannerAd = () => {
     const fetchBanners = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/banners', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY,
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET,
-          },
-        });
-
+        const response = await Api.get('/banners');
         const data = response.data.filter(
           (banner) => banner.posicao.includes("home-3")
         );
@@ -57,7 +51,7 @@ export const BannerAd = () => {
             <div className="ad-banner-img">
               {
                 loading ? (
-                  <div className="ad-banner-img load">
+                  <div className="banner__post-item load">
                     <img src={adBanner} alt="img" />
                   </div>
                 ) : (

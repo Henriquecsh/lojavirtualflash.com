@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-// URL base da API do WordPress
-const API_BASE_URL = process.env.WORDPRESS_API_URL;
-
-// Cria uma instância do Axios com a URL base
-const wordpressApi = axios.create({
-    baseURL: API_BASE_URL,
+const Api = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL,
+    auth: {
+        username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY,
+        password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET,
+    },
 });
 
-export default wordpressApi;
+export default Api;

@@ -1,24 +1,18 @@
 import React from "react";
 import Link from "next/link";
 
+const placeholder = "/blog/placeholder.png";
 const blogImgShape = "/blog/blog_img_shape.svg";
 
-export const BlogOneItem = ({ image, tags, author, date, title }) => {
+export const BlogOneItem = ({ image, post_author, post_date, post_title, slug }) => {
   return (
     <div className="col-lg-4 col-md-6 col-sm-8">
       <div className="blog__post-item shine-animate-item">
         <div className="blog__post-thumb">
           <div className="blog__post-mask shine-animate">
-            <Link href="/blog/b-123">
-              <img src={image} alt="img" />
+            <Link href={`/blog/${slug}`}>
+              <img src={image ? image : placeholder} alt={post_title} />
             </Link>
-            <ul className="list-wrap blog__post-tag">
-              {tags.map((tag, index) => (
-                <li key={index}>
-                  <Link href="/blog">{tag}</Link>
-                </li>
-              ))}
-            </ul>
           </div>
           <div className="shape">
             <img src={blogImgShape} alt="" className="injectable" />
@@ -28,17 +22,17 @@ export const BlogOneItem = ({ image, tags, author, date, title }) => {
           <div className="blog__post-meta">
             <ul className="list-wrap">
               <li>
-                <i className="flaticon-user"></i>by
-                <Link href="/blog/b-123">{author}</Link>
+                <i className="flaticon-user"></i>
+                Por {post_author}
               </li>
               <li>
                 <i className="flaticon-calendar"></i>
-                {date}
+                {post_date}
               </li>
             </ul>
           </div>
           <h2 className="title">
-            <Link href="/blog/b-123">{title}</Link>
+            <Link href={`/blog/${slug}`}>{title}</Link>
           </h2>
         </div>
       </div>

@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from 'axios';
-import { useParams, redirect } from "next/navigation";
+import { useParams } from "next/navigation";
 
 const paginationPrev = "/icon/pagination_icon01.svg";
 const paginationNext = "/icon/pagination_icon02.svg";
@@ -69,7 +69,6 @@ export const ProductPagination = () => {
 
   return (
     <>
-      {console.log(totalPages)}
       {
         totalPages > 1 ? (
           <>
