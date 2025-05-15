@@ -14351,6 +14351,23 @@ blockquote p {
   max-width: 89px;
 }
 
+.overlay-cart-float-wrapper {
+  background-color: rgba(0, 0, 0, .4);
+  transition: all .5s linear;
+  position: fixed;
+  display: none;
+  border: none;
+  z-index: 998;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+.overlay-cart-float-wrapper.open {
+  display: block;
+}
+
 .cart-float-wrapper {
   background-color: rgba(255, 255, 255, .8);
   transform: translate3d(450px, 0, 0);
@@ -14360,7 +14377,7 @@ blockquote p {
   position: fixed;
   max-width: 90%;
   width: 450px;
-  z-index: 99;
+  z-index: 999;
   opacity: 0;
   bottom: 0;
   right: 0;

@@ -71,7 +71,7 @@ export const HeaderFour = () => {
                       </li>
                       <li className="header-cart header-cart-two">
                         <strong className="price">{formatarMoeda(valorTotalCarrinho)}</strong>
-                        <Link href="#" onClick={toggleCart}>
+                        <Link href="#" onClick={toggleCart} >
                           <i className="flaticon-shopping-bag"></i>
                           <span>{quantItemCarrinho}</span>
                         </Link>

@@ -1,17 +1,22 @@
 "use client"
+import { usePathname } from "next/navigation";
 import { createContext, useContext, useState } from "react";
+
 
 export const CarrinhoContext = createContext();
 CarrinhoContext.displayName = "Carrinho";
 
 export const CarrinhoProvider = ({ children }) => {
+    const pathname = usePathname();
 
     const [isFloatCartOpen, setIsFloatCartOpen] = useState(false);
     const [quantItemCarrinho, setQuantItemCarrinho] = useState(3);
     const [valorTotalCarrinho, setValorTotalCarrinho] = useState(10);
 
     const toggleCart = () => {
-        setIsFloatCartOpen(!isFloatCartOpen);
+        if (pathname !== "/carrinho") {
+            setIsFloatCartOpen(!isFloatCartOpen);
+        }
     };
 
     function formatarMoeda(valor) {

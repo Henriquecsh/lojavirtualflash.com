@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { CarrinhoItem } from "@/components/carrinho/CarrinhoItem"
-
-
 import { useCarrinhoContext } from "@/context/CarrinhoContext";
 
 export const Carrinho = () => {

@@ -13,6 +13,7 @@ export const CarrinhoSuspenso = () => {
 
     return (
         <>
+            <button type="button" onClick={toggleCart} className={`overlay-cart-float-wrapper ${isFloatCartOpen ? ' open ' : ''}`}></button>
             <div id="cart-float-wrapper" className={`cart-float-wrapper ${isFloatCartOpen ? ' open ' : ''}`}>
                 <div className="cart-header">
                     <h4 className="title">Carrinho de compras</h4>
