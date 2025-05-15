@@ -9,6 +9,7 @@ import { useMobileMenu } from "../../lib/hooks/useHeader";
 import { HeaderMobileMenu } from "./HeaderMobileMenu";
 import Select from "react-select";
 import { useSearchParams } from "next/navigation";
+import { useCarrinhoContext } from "@/context/CarrinhoContext";
 
 const logoImg = "/logo/logo.png";
 
@@ -16,6 +17,7 @@ export const HeaderFour = () => {
   useMobileMenu();
 
   const [logoPrincipal, setLogoPrincipal] = useState(null);
+  const { toggleCart, formatarMoeda, valorTotalCarrinho, quantItemCarrinho } = useCarrinhoContext();
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -68,10 +70,10 @@ export const HeaderFour = () => {
                         </Link>
                       </li>
                       <li className="header-cart header-cart-two">
-                        <strong className="price">$0.00</strong>
-                        <Link href="#">
+                        <strong className="price">{formatarMoeda(valorTotalCarrinho)}</strong>
+                        <Link href="#" onClick={toggleCart}>
                           <i className="flaticon-shopping-bag"></i>
-                          <span>0</span>
+                          <span>{quantItemCarrinho}</span>
                         </Link>
                       </li>
                     </ul>

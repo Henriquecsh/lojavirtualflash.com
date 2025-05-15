@@ -2,6 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide, modules } from "../swiper/SwiperRoot";
+import DOMPurify from "isomorphic-dompurify";
+import parse from 'html-react-parser';
+
 import Api from "@/lib/api";
 
 const quoteIcon = "/icon/quote02.svg";
@@ -71,9 +74,8 @@ export const TestimonialFour = () => {
             </>
           ) : (
             <>
-              {console.log(depoimentos)}
               <Swiper {...swiperSettings} className="testimonial-active-two">
-                {depoimentos.map((depoimento) => {
+                {depoimentos.map((depoimento) => (
                   <SwiperSlide key={depoimento.id}>
                     <div className="testimonial__item-four">
                       <div className="testimonial__icon-four">
@@ -82,11 +84,11 @@ export const TestimonialFour = () => {
                       <div className="testimonial__content-four">
                         <h2 className="title">{depoimento.title ? depoimento.title : ''}</h2>
                         <div className="rating">
-                          {[1, 2, 3, 4, 5].slice(0, depoimento.nota_depoimento).map((index) => {
-                            <i key={index} className="fas fa-star"></i>
-                          })}
+                          {[...Array(5)].map((_, index) => (
+                            <i key={index} className={index < depoimento.nota_depoimento ? 'fas fa-star' : 'far fa-star'}></i>
+                          ))}
                         </div>
-                        <p>{depoimento.content}</p>
+                        <p>{depoimento?.content && parse(DOMPurify.sanitize(depoimento.content))}</p>
                       </div>
                       <div className="testimonial__author-two testimonial__author-four">
                         <div className="testimonial__author-thumb">
@@ -95,14 +97,14 @@ export const TestimonialFour = () => {
                         <div className="testimonial__author-content">
                           <h4 className="title">{depoimento.nome_depoimento ? depoimento.nome_depoimento : ''}</h4>
                           <span>
-                            <span>{depoimento.cargo_depoimento ? depoimento.cargo_depoimento : ''}</span>
-                            <span>{depoimento.empresa_depoimento ? depoimento.empresa_depoimento : ''}</span>
+                            {depoimento.cargo_depoimento ? ' ' + depoimento.cargo_depoimento + ' ' : ''}
+                            {depoimento.empresa_depoimento ? ' / ' + depoimento.empresa_depoimento + ' ' : ''}
                           </span>
                         </div>
                       </div>
                     </div>
                   </SwiperSlide>
-                })}
+                ))}
               </Swiper>
 
               <div className="testimonial__nav-wrap">

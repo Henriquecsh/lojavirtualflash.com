@@ -1,8 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ProductOneItem } from "./ProductOneItem";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import Api from "@/lib/api";
+
+const placeholder = "/products/woocommerce-placeholder.png";
+const loadImage = "/loads/loadCategoryDesktop.png";
 
 export const ProductCategory = () => {
   const [productData, setProductData] = useState([]);
@@ -12,18 +15,24 @@ export const ProductCategory = () => {
   const currentPage = parseInt(page) || 1;
   const [currentCategory, setCurrentCategory] = useState(false);
   const [params, setParams] = useState({ per_page: 10, page: currentPage });
+  const [notFound, setNotFound] = useState(false);
 
 
   useEffect(() => {
-
     const fetchProductsCategories = async () => {
       try {
         const response = await Api.get('/products/categories');
         const data = response.data ? response.data : [];
         const categoryID = data.find((category) => category.slug === slug);
 
-        setParams({ per_page: 10, page: currentPage, category: categoryID.id });
-        setCurrentCategory(categoryID.id);
+        if (!categoryID?.id) {
+          setNotFound(true);
+        } else {
+          setParams({ per_page: 10, page: currentPage, category: categoryID.id });
+          setCurrentCategory(categoryID.id);
+          fetchProducts();
+        }
+
         setLoading(false);
       } catch (err) {
         setError('Erro ao carregar os produtos');
@@ -36,8 +45,8 @@ export const ProductCategory = () => {
 
     const fetchProducts = async () => {
       setLoading(true);
-
       try {
+
         const response = await Api.get('/products', {
           params: params,
         });
@@ -52,24 +61,47 @@ export const ProductCategory = () => {
         setLoading(false);
       }
     };
-
-    fetchProducts();
   }, [currentCategory]);
 
   return (
     <>
       {
         loading ? (
-          <div className="row gutter-20 row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 justify-content-center"><p>Carregando...</p></div>
+          <div className="row">
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className="col">
+                <div className="product__item">
+                  <div className="product__thumb load">
+                    <img src={placeholder} alt="" />
+                  </div>
+                  <div className="product__content">
+                    <div className="product__reviews load">
+                      <div className="rating">&nbsp;</div>
+                    </div>
+                    <h4 className="title load">&nbsp;</h4>
+                    <h3 className="price load">&nbsp;</h3>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <>
-            <div className="row gutter-20 row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 justify-content-center">
-              {productData.map((product, index) => (
-                <div className="col" key={index}>
-                  <ProductOneItem {...product} />
+            {notFound ? (
+              <>
+                <div className="row gutter-20 row-cols-1">
+                  <p className="col">Nenhum produto encontrado nesta categoria.</p>
                 </div>
-              ))}
-            </div>
+              </>
+            ) : (
+              <div className="row gutter-20 row-cols-1 row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 justify-content-center">
+                {productData.map((product, index) => (
+                  <div className="col" key={index}>
+                    <ProductOneItem {...product} />
+                  </div>
+                ))}
+              </div>
+            )}
           </>
         )
       }

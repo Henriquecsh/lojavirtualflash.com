@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { CarrinhoSuspenso } from "@/components/carrinho/carrinhoSuspenso";
 
 const rightArrow = "/icon/right_arrow04.svg";
 const wLogo = "/logo/w_logo.png";
@@ -213,6 +214,7 @@ export const FooterFour = () => {
           </div>
         </div>
       </div>
+      <CarrinhoSuspenso />
     </footer>
   );
 };

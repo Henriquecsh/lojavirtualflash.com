@@ -1,27 +1,31 @@
+import React from "react";
+import { ProductProvider } from '@/context/ProductContext';
 import { ProductDetailsReview } from "@/components/products/ProductDetailsReview";
 import { ProductDetailsTop } from "@/components/products/ProductDetailsTop";
 import { ProductRelated } from "@/components/products/ProductRelated";
 import { Layout } from "@/layouts/Layout";
-import React from "react";
 
 export default function ProductDetails() {
   return (
-    <Layout
-      breadcrumbTitle="Detalhes do produto"
-      breadcrumbSubtitle={"All Products"}
-    >
-      <section className="product__details-area">
-        <div className="container">
-          {/* top */}
-          <ProductDetailsTop />
 
-          {/* review */}
-          <ProductDetailsReview />
+    <ProductProvider>
+      <Layout
+        breadcrumbTitle="Detalhes do produto"
+        breadcrumbSubtitle={""}
+      >
+        <section className="product__details-area">
+          <div className="container">
+            {/* top */}
+            <ProductDetailsTop />
 
-          {/* related products */}
-          <ProductRelated />
-        </div>
-      </section>
-    </Layout>
+            {/* review */}
+            <ProductDetailsReview />
+
+            {/* related products */}
+            <ProductRelated />
+          </div>
+        </section>
+      </Layout>
+    </ProductProvider>
   );
 }

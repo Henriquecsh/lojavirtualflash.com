@@ -58,9 +58,9 @@ export const ProductOneItem = ({
             ))}
           </div>
           {
-            reviews ? (
+            reviews && (
               <span>{rating_count <= 1 ? (rating_count + ' Avaliação') : (rating_count + ' Avaliações')}</span>
-            ) : ('')
+            )
           }
         </div>
         <h4 className="title">

@@ -43,8 +43,8 @@ export const CategoryOne = () => {
           </div>
           <div className="col-md-4">
             <div className="view-all-btn">
-              <Link href="/product">
-                Ver todas categorias{" "}
+              <Link href="/produtos">
+                Ver todos produtos{" "}
                 <i className="flaticon-right-arrow-angle"></i>
               </Link>
             </div>

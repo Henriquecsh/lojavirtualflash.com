@@ -1,74 +1,59 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide, modules } from "../swiper/SwiperRoot";
+import { useProductContext } from "@/context/ProductContext";
 import { ProductOneItem } from "./ProductOneItem";
+import Api from "@/lib/api";
+
 
 const titleShape = "/images/title_shape.svg";
 const product1 = "/products/products_img01.jpg";
-const product2 = "/products/products_img02.jpg";
-const product3 = "/products/products_img03.jpg";
-const product4 = "/products/products_img04.jpg";
-const product5 = "/products/products_img05.jpg";
-const product7 = "/products/products_img07.jpg";
-
-const productData = [
-  {
-    id: 1,
-    image: product1,
-    badge: { type: "new", text: "New" },
-    title: "Dog Harness-Neoprene Comfort Liner-Orange and ...",
-    price: 12.0,
-    oldPrice: 25.0,
-    reviews: 2,
-  },
-  {
-    id: 2,
-    image: product2,
-    badge: { type: "sale", text: "Sale!" },
-    title: "Arm & Hammer Super Deodori zing Dog Shampoo, Pet Wash",
-    price: 20.0,
-    oldPrice: 30.0,
-    reviews: 2,
-  },
-  {
-    id: 3,
-    image: product3,
-    title: "Milk-Bone Brushing Chews Daily Dental Dog Treats ...",
-    price: 36.0,
-    oldPrice: 56.0,
-    reviews: 2,
-  },
-  {
-    id: 4,
-    image: product4,
-    badge: { type: "sale", text: "Sale!" },
-    title: `Two Door Top Load Plastic Kennel & Pet Carrier, Blue 19"`,
-    price: 18.0,
-    oldPrice: 33.0,
-    reviews: 2,
-  },
-  {
-    id: 5,
-    image: product5,
-    badge: { type: "new", text: "New" },
-    title: "The Kitten House with Mat Sleeping Bed House",
-    price: 19.0,
-    oldPrice: 28.0,
-    reviews: 2,
-  },
-  {
-    id: 6,
-    image: product7,
-    badge: { type: "sale", text: "Sale!" },
-    title: `Two Door Top Load Plastic Kennel & Pet Carrier, Blue 19"`,
-    price: 18.0,
-    oldPrice: 33.0,
-    reviews: 2,
-  },
-];
 
 export const ProductRelated = () => {
+
+  const { product } = useProductContext();
+
+  const [productData, setProductData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        if (product.id) {
+          const response = await Api.get(`/products/${product.id}/related`, {
+            params: {
+              per_page: 12
+            },
+          });
+          setProductData(response.data);
+        } else {
+          const response = await Api.get('/products', {
+            params: {
+              per_page: 12,
+              exclude: product.id
+            },
+          });
+          setProductData(response.data);
+        }
+
+        setLoading(false);
+      } catch (err) {
+        setError('Erro ao carregar os produtos');
+        setLoading(false);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [product.id]);
+
+
+
   const swiperSettings = {
     slidesPerView: 1,
     spaceBetween: 20,
@@ -101,13 +86,14 @@ export const ProductRelated = () => {
       prevEl: ".product-button-prev",
     },
   };
+
   return (
     <div className="related-product-area">
       <div className="row">
         <div className="col-12">
           <div className="section__title-two mb-20">
             <h2 className="title">
-              Related Products
+              Produtos relacionados
               <img src={titleShape} alt="" className="injectable" />
             </h2>
           </div>

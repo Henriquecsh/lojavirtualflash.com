@@ -1,19 +1,22 @@
-import { ProductCategory } from "@/components/products/ProductCategory";
 import { ProductPagination } from "@/components/products/ProductPagination";
+import { ProductCategory } from "@/components/products/ProductCategory";
+import { ProductsProvider } from '@/context/ProductsContext';
 import { Layout } from "@/layouts/Layout";
 
 export default function Product() {
   return (
-    <Layout breadcrumbTitle="Todos produtos">
-      <section className="product__area-four">
-        <div className="container">
-          {/* list */}
-          <ProductCategory />
+    <ProductsProvider>
+      <Layout breadcrumbTitle="Todos produtos">
+        <section className="product__area-four">
+          <div className="container">
+            {/* list */}
+            <ProductCategory />
 
-          {/* pagination */}
-          <ProductPagination />
-        </div>
-      </section>
-    </Layout>
+            {/* pagination */}
+            <ProductPagination />
+          </div>
+        </section>
+      </Layout>
+    </ProductsProvider>
   );
 }

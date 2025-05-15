@@ -23,7 +23,7 @@ export const ProductTwo = () => {
                 <div className="col-sm-8">
                   <div className="section__title-two mb-20">
                     <h2 className="title">
-                      Hot Sale Products
+                      Produtos em promoção
                       <img src={titleShape} alt="" className="injectable" />
                     </h2>
                   </div>
@@ -31,7 +31,7 @@ export const ProductTwo = () => {
                 <div className="col-sm-4">
                   <div className="view-all-btn">
                     <Link href="/product">
-                      See All <i className="flaticon-right-arrow-angle"></i>
+                      Ver todos <i className="flaticon-right-arrow-angle"></i>
                     </Link>
                   </div>
                 </div>
@@ -41,7 +41,7 @@ export const ProductTwo = () => {
                 <div className="col-xl-6 col-lg-12 col-md-6">
                   <div className="product__item product__item-two">
                     <div className="product__thumb product__thumb-two">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg1} alt="img" />
                       </Link>
                       <div className="sale-wrap">
@@ -60,7 +60,7 @@ export const ProductTwo = () => {
                         <span>(2 Reviews)</span>
                       </div>
                       <h4 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           IAMS Minichunks Chicken & Whole Grains Dry Dog Food fo
                         </Link>
                       </h4>
@@ -73,13 +73,13 @@ export const ProductTwo = () => {
                 <div className="col-xl-6 col-lg-12 col-md-6">
                   <div className="product__item-three">
                     <div className="product__thumb-three">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg2} alt="img" />
                       </Link>
                     </div>
                     <div className="product__content product__content-three">
                       <h2 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           TrustyPup Dragon Squeaky Plush Chew ..
                         </Link>
                       </h2>
@@ -90,13 +90,13 @@ export const ProductTwo = () => {
                   </div>
                   <div className="product__item-three">
                     <div className="product__thumb-three">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg3} alt="img" />
                       </Link>
                     </div>
                     <div className="product__content product__content-three">
                       <h2 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           Vital Pet Life Salmon Oil for Dogs and Cat
                         </Link>
                       </h2>
@@ -105,13 +105,13 @@ export const ProductTwo = () => {
                   </div>
                   <div className="product__item-three">
                     <div className="product__thumb-three">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg4} alt="img" />
                       </Link>
                     </div>
                     <div className="product__content product__content-three">
                       <h2 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           Dog HarnesNeoprene Comfort Liner...
                         </Link>
                       </h2>
@@ -132,15 +132,15 @@ export const ProductTwo = () => {
                 <div className="col-sm-8">
                   <div className="section__title-two mb-20">
                     <h2 className="title">
-                      Latest Products
+                      Últimos produtos
                       <img src={titleShape} alt="" className="injectable" />
                     </h2>
                   </div>
                 </div>
                 <div className="col-sm-4">
                   <div className="view-all-btn">
-                    <Link href="/product">
-                      See All <i className="flaticon-right-arrow-angle"></i>
+                    <Link href="/produtos">
+                      Ver todos <i className="flaticon-right-arrow-angle"></i>
                     </Link>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export const ProductTwo = () => {
                 <div className="col-xl-6 col-lg-12 col-md-6">
                   <div className="product__item product__item-two">
                     <div className="product__thumb product__thumb-two">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg5} alt="img" />
                       </Link>
                       <div className="sale-wrap sale-wrap-two">
@@ -169,7 +169,7 @@ export const ProductTwo = () => {
                         <span>(2 Reviews)</span>
                       </div>
                       <h4 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           Pro-Sense Multivitamin, 90ct For your Lovely Dog
                         </Link>
                       </h4>
@@ -182,13 +182,13 @@ export const ProductTwo = () => {
                 <div className="col-xl-6 col-lg-12 col-md-6">
                   <div className="product__item-three">
                     <div className="product__thumb-three">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg6} alt="img" />
                       </Link>
                     </div>
                     <div className="product__content product__content-three">
                       <h2 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           Pet Grooming Glove for Dogs & Cats ...
                         </Link>
                       </h2>
@@ -199,13 +199,13 @@ export const ProductTwo = () => {
                   </div>
                   <div className="product__item-three">
                     <div className="product__thumb-three">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg7} alt="img" />
                       </Link>
                     </div>
                     <div className="product__content product__content-three">
                       <h2 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           Beloved Pets For Playing Toy
                         </Link>
                       </h2>
@@ -214,13 +214,13 @@ export const ProductTwo = () => {
                   </div>
                   <div className="product__item-three">
                     <div className="product__thumb-three">
-                      <Link href="/product/p-123">
+                      <Link href="/produtos">
                         <img src={productImg8} alt="img" />
                       </Link>
                     </div>
                     <div className="product__content product__content-three">
                       <h2 className="title">
-                        <Link href="/product/p-123">
+                        <Link href="/produtos">
                           Zesty Paws Calming Puppy Bites ...
                         </Link>
                       </h2>

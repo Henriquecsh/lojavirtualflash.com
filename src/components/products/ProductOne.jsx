@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide, modules } from "../swiper/SwiperRoot";
 import { ProductOneItem } from "./ProductOneItem";
+import { useEffect, useState } from 'react';
 import Api from "@/lib/api";
 
 const titleShape = "/images/title_shape.svg";

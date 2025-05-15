@@ -1,78 +1,19 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-import axios from 'axios';
-import { useParams } from "next/navigation";
 import parse from 'html-react-parser';
 import DOMPurify from "isomorphic-dompurify";
 
-const placeholder = "/products/woocommerce-placeholder.png";
 const cardImg = "/products/card.png";
 
+import { useProductContext } from "@/context/ProductContext";
+
 export const ProductDetailsTop = () => {
-  const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [attributes, setAttributes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-  const { slug } = useParams();
 
-  const [slides, setSlides] = useState([{ src: placeholder, alt: '' }]);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL + '/products', {
-          auth: {
-            username: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_KEY, // Substitua pela sua Consumer Key
-            password: process.env.NEXT_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET, // Substitua pela sua Consumer Secret
-          },
-          params: {
-            slug: slug
-          },
-        });
-
-        const data = response.data[0] ? response.data[0] : []
-        setProduct(data);
-        setCategories(data.categories);
-        setTags(data.tags);
-        setSlides(data.images);
-        setAttributes(data.attributes);
-        setLoading(false);
-      } catch (err) {
-        setError('Erro ao carregar os produtos');
-        setLoading(false);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, []);
-
-  function formatarMoeda(valor) {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(valor);
-  }
-
-
-  const handleQuantityChange = (type) => {
-    if (type === "inc") {
-      setQuantity((prev) => prev + 1);
-    } else if (type === "dec" && quantity > 1) {
-      setQuantity((prev) => prev - 1);
-    }
-  };
+  const { product, quantity, tags, categories, attributes, loading, slides, formatarMoeda, handleQuantityChange } = useProductContext();
 
   // lightbox
   const [id, setId] = useState(null);
@@ -234,41 +175,10 @@ export const ProductDetailsTop = () => {
                     </li>
                   </>
                 )}
-                {/* <li className="product__details-social">
-                  <span className="title">Compartilhar:</span>
-                  <ul className="list-wrap">
-                    <li>
-                      <a href="https://www.facebook.com/" target="_blank">
-                        <i className="fab fa-facebook-f"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://twitter.com" target="_blank">
-                        <i className="fab fa-twitter"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.whatsapp.com/" target="_blank">
-                        <i className="fab fa-whatsapp"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.instagram.com/" target="_blank">
-                        <i className="fab fa-instagram"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.youtube.com/" target="_blank">
-                        <i className="fab fa-youtube"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </li> */}
               </ul>
             </div>
-
             <div className="product__details-checkout">
-              <span className="title">Guaranteed Safe Checkout</span>
+              <span className="title">Pagamento seguro</span>
               <img src={cardImg} alt="" />
             </div>
           </div>

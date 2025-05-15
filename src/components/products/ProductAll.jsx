@@ -21,9 +21,6 @@ export const ProductAll = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-
-        console.log(search !== '');
-
         if (search !== '') {
           const response = await Api.get(`/products?search=${search}`, {
             params: params,
@@ -31,7 +28,6 @@ export const ProductAll = () => {
           setProductData(response.data);
           setTotalProduct(response.headers['x-wp-total']);
         } else {
-
           const response = await Api.get('/products', {
             params: params,
           });

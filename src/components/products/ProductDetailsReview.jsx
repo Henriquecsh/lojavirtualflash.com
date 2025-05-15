@@ -1,6 +1,14 @@
+"use client";
 import React from "react";
+import parse from 'html-react-parser';
+import DOMPurify from "isomorphic-dompurify";
+import { useProductContext } from "@/context/ProductContext";
+
 
 export const ProductDetailsReview = () => {
+
+  const { product } = useProductContext();
+
   return (
     <div className="row">
       <div className="col-12">
@@ -17,23 +25,31 @@ export const ProductDetailsReview = () => {
                 aria-controls="description-tab-pane"
                 aria-selected="true"
               >
-                Description
+                Descrição
               </button>
             </li>
-            <li className="nav-item" role="presentation">
-              <button
-                className="nav-link"
-                id="reviews-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#reviews-tab-pane"
-                type="button"
-                role="tab"
-                aria-controls="reviews-tab-pane"
-                aria-selected="false"
-              >
-                Reviews
-              </button>
-            </li>
+            {
+              product.reviews_allowed && (
+                <>
+                  <li className="nav-item" role="presentation">
+                    <button
+                      className="nav-link"
+                      id="reviews-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#reviews-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="reviews-tab-pane"
+                      aria-selected="false"
+                    >
+                      Avaliações <span>{product.rating_count <= 1 ? (product.rating_count) : (product.rating_count)}</span>
+                    </button>
+                  </li>
+                </>
+
+              )
+            }
+
           </ul>
           <div className="tab-content" id="myTabContent2">
             <div
@@ -43,43 +59,35 @@ export const ProductDetailsReview = () => {
               aria-labelledby="description-tab"
               tabIndex="0"
             >
-              <p>
-                Pellentesque habitant morbi tristique senectus et netus et
-                malesuada fames ac turpis egestas. Vestibulum tortor quam,
-                feugiat vitae, ultricies eget, tempor sit amet ante. ibero sit
-                amet quam egestas semper. Aenean ultricies mi vitae est. Mauris
-                placerat eleifend leo.ea commodo consat. Duis aute irure dolor
-                in reprehenderit volup tate velitesse cillum dolore euy elit ale
-                ruin irure dolor.uis aute irure dolor in reprehenderit n volup
-                tate velit esse cillum,
-              </p>
-              <p>
-                habitant morbi tristique senectus et netus et malesuada fames ac
-                turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies
-                eget, tempor sit amet bero sit amet uam egestas semper. Aenean
-                ultricies mi vitae est. Mauris placerat eleifend leo.ea commodo
-                consat.
-              </p>
+              {product?.description && parse(DOMPurify.sanitize(product.description))}
             </div>
-            <div
-              className="tab-pane fade"
-              id="reviews-tab-pane"
-              role="tabpanel"
-              aria-labelledby="reviews-tab"
-              tabIndex="0"
-            >
-              <div className="product-desc-review">
-                <div className="product-desc-review-title mb-15">
-                  <h5 className="title">Customer Reviews (0)</h5>
-                </div>
-                <div className="left-rc">
-                  <p>No reviews yet</p>
-                </div>
-                <div className="right-rc">
-                  <a href="#">Write a review</a>
-                </div>
-              </div>
-            </div>
+
+            {
+              product.reviews_allowed && (
+                <>
+                  <div
+                    className="tab-pane fade"
+                    id="reviews-tab-pane"
+                    role="tabpanel"
+                    aria-labelledby="reviews-tab"
+                    tabIndex="0"
+                  >
+                    <div className="product-desc-review">
+                      <div className="product-desc-review-title mb-15">
+                        <h5 className="title">Customer Reviews (0)</h5>
+                      </div>
+                      <div className="left-rc">
+                        <p>No reviews yet</p>
+                      </div>
+                      <div className="right-rc">
+                        <a href="#">Write a review</a>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )
+            }
+
           </div>
         </div>
       </div>
